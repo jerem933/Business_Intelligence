@@ -22,7 +22,6 @@
 <body>
     <h1>Projet BI</h1>
     <p><strong>Data visualisation Jeux Olympiques </strong> : <span id="info"></span></p>
-    <!-- <input type="file" id="csv-file" name="files"/> -->
 	<FORM>
 <SELECT name="annee" id="annee"  onchange="maj()" size="1">
 <OPTION>0000
@@ -61,7 +60,7 @@
 	//alert(document.getElementById("annee").value);
     var Olympics_medal;
 	var annee = document.getElementById("annee").value;
-	
+	alert(annee);
 	Papa.parse("https://drive.google.com/open?id=0B3-A_3YS75sWa2JhcEVHSXdXZDg",{
     //Papa.parse("https://github.com/jerem933/Business_Intelligence/blob/master/Olympics_games_datasetV2.csv", {
             header: true,
