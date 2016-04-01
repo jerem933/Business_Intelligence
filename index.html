@@ -22,6 +22,7 @@
 <body>
     <h1>Projet BI</h1>
     <p><strong>Data visualisation Jeux Olympiques </strong> : <span id="info"></span></p>
+    <!-- <input type="file" id="csv-file" name="files"/> -->
 	<FORM>
 <SELECT name="annee" id="annee"  onchange="maj()" size="1">
 <OPTION>0000
@@ -60,26 +61,15 @@
 	//alert(document.getElementById("annee").value);
     var Olympics_medal;
 	var annee = document.getElementById("annee").value;
-	Papa.parse("http://jerem933.github.io/Business_Intelligence/Olympics_games_datasetV2.csv",{
-    //Papa.parse("https://github.com/jerem933/Business_Intelligence/blob/master/Olympics_games_datasetV2.csv", {
+    Papa.parse("http://jerem933.github.io/Business_Intelligence/Olympics_games_datasetV2.csv", {
             header: true,
             delimiter:";",
             dynamicTyping: true,
+			download: true,
             complete: function(results) {
-			console.log("Row:", results.data);
                 Olympics_medal = results;
                 var totalMedalsUS = 0, totalGoldUS = 0, totalSilverUS = 0, totalBronzeUS = 0, totalMedalsDE = 0, totalGoldDE = 0, totalSilverDE = 0, totalBronzeDE = 0, totalMedalsFR = 0, totalGoldFR = 0, totalSilverFR = 0, totalBronzeFR = 0, totalMedalsAUS = 0, totalGoldAUS = 0, totalSilverAUS = 0, totalBronzeAUS = 0, totalMedalsAUT = 0, totalGoldAUT = 0, totalSilverAUT = 0, totalBronzeAUT = 0, totalMedalsCAN = 0, totalGoldCAN = 0, totalSilverCAN = 0, totalBronzeCAN = 0, totalMedalsCHN = 0, totalGoldCHN = 0, totalSilverCHN = 0, totalBronzeCHN = 0, totalMedalsGBR = 0, totalGoldGBR = 0, totalSilverGBR = 0, totalBronzeGBR = 0, totalMedalsIT = 0, totalGoldIT = 0, totalSilverIT = 0, totalBronzeIT = 0, totalMedalsNOR = 0, totalGoldNOR = 0, totalSilverNOR = 0, totalBronzeNOR = 0, totalMedalsRUS = 0, totalGoldRUS = 0, totalSilverRUS = 0, totalBronzeRUS = 0, totalMedalsSWE = 0, totalGoldSWE = 0, totalSilverSWE = 0, totalBronzeSWE = 0;
                 
-                /*for (var i=0; i < Olympics_medal.data.length; i++) {
-			
-				
-                    if (Olympics_medal.data[i].Country === "USA" && Olympics_medal.data[i].Total !== "" && if(annee !== 'Global'){Olympics_medal.data[i].Year === annee} {
-                        totalMedalsUS += Olympics_medal.data[i].Total;
-                    }
-                    if (Olympics_medal.data[i].Country === "USA" && Olympics_medal.data[i].Gold !== "" && if(annee !== 'Global'){Olympics_medal.data[i].Year === annee} {
-                        totalGoldUS += Olympics_medal.data[i].Gold;
-                    }
-                }*/
 				for (var i=0; i < Olympics_medal.data.length; i++) {
 					
                     if (Olympics_medal.data[i].Country === "USA" && Olympics_medal.data[i].Total !== "" && Olympics_medal.data[i].Year == annee) {
@@ -352,12 +342,16 @@
                                     var prop = e.target.feature.properties;
                                     document.getElementById("info").innerHTML = prop.name + ' (' + prop.totalMedals + ')';
                                     layer.setStyle({
-                                        fillOpacity: 5,
+                                        fillOpacity: 10,
                                         color: "#000"
                                     })
                                 },
                                 mouseout : function (e) {
                                     document.getElementById("info").innerHTML = "";
+									 layer.setStyle({
+                                        fillOpacity: 0.7,
+                                        color: "#000"
+                                    })
                                 }
                             })
                         }
@@ -365,11 +359,6 @@
 
                 }); 
             }
-        });          
-
-    /*$(document).ready(function(){
-        $("#csv-file").change(handleFileSelect);
-    });*/
-    	 
+        });             	 
 </script>
 
