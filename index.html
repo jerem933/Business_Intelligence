@@ -63,7 +63,7 @@
 <div id="Reportings" class="tabcontent">
   <h3>Reportings</h3>
   <FORM>
-  <SELECT name="pays" id="pays" onchange="tableau()" size="1">
+  <SELECT name="paysfiltre" id="paysfiltre" onchange="tableau()" size="1">
 <OPTION value="AUS">Australie</option>
 <OPTION value="AUT">Autriche</option>
 <OPTION value="CAN">Canada</option>
@@ -680,7 +680,7 @@ function creationGraph(info) {
 
 function tableau(){
 	$(function () {
-	var pays = document.getElementById("pays").value;
+	var pays = document.getElementById("paysfiltre").value;
     $('#FiltrePays').highcharts({
         chart: {
             type: 'column'
@@ -689,7 +689,7 @@ function tableau(){
 		 '#FFD700', '#C0C0C0', '#8C7853'
                 ],
         title: {
-            text: document.getElementById("pays").options[document.getElementById('pays').selectedIndex].text,
+            text: document.getElementById("paysfiltre").options[document.getElementById('paysfiltre').selectedIndex].text,
         },
         xAxis: {
             categories: ['2000', '2002', '2004', '2006', '2008', '2010', '2012', '2014']
