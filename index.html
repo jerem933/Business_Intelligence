@@ -6,6 +6,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="leaflet/leaflet.css">
+		<link rel="stylesheet" href="index.css">
 	<script src="leaflet/leaflet.js"></script>
     <script src="PapaParse-4.1.2/PapaParse-4.1.2/papaparse.min.js"></script>
     <script src="jquery-2.2.0.min.js"></script>
@@ -21,9 +22,19 @@
 </head>
 <body>
     <h1>Projet BI</h1>
+	
+	<ul class="tab">
+  <li><a href="#" class="tablinks" onclick="openTab(event, 'Carte')">Carte</a></li>
+  <li><a href="#" class="tablinks" onclick="openTab(event, 'Reportings')">Reportings</a></li>
+  <li><a href="#" class="tablinks" onclick="openTab(event, 'Autre')">Autre</a></li>
+</ul>
+
+
+
+<div id="Carte" class="tabcontent">
     <p><strong>Data visualisation Jeux Olympiques </strong> : <span id="info"></span></p>
     <!-- <input type="file" id="csv-file" name="files"/> -->
-	<FORM>
+	<FORM>	
 <SELECT name="annee" id="annee"  onchange="maj()" size="1">
 <OPTION>Historique
 <OPTION>2000
@@ -37,6 +48,18 @@
 </SELECT>
 </FORM>
 	<div id="map" style="width: 1000px; height: 500px"></div>
+	</div>
+	
+	<div id="Reportings" class="tabcontent">
+  <h3>Reportings</h3>
+  <p>Paris is the capital of France.</p> 
+</div>
+
+<div id="Autre" class="tabcontent">
+  <h3>Autre</h3>
+  <p>Tokyo is the capital of Japan.</p>
+</div>
+
 </body>
 </html>
 
@@ -528,6 +551,27 @@
 
                 }); 
             }
-        });             	 
+        });  
+
+function openTab(evt, tabName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tabcontent.length; i++) {
+        tablinks[i].classList.remove("active");
+    }
+
+    // Show the current tab, and add an "active" class to the link that opened the tab
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.classList.add("active");
+}		
 </script>
 
