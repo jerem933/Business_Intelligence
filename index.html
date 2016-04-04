@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="index.css">
 	<script src="leaflet/leaflet.js"></script>
     <script src="PapaParse-4.1.2/PapaParse-4.1.2/papaparse.min.js"></script>
+	    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script src="canvasjs-1.8.0/canvasjs.min.js"></script>
     <script src="jquery-2.2.0.min.js"></script>
     <style>
@@ -23,11 +24,13 @@
 </head>
 <body>
     <h1>Projet BI</h1>
+	<div id ="tabs">
     	<ul class="tab">
-  <li><a href="#" class="tablinks" onclick="openTab(event, 'Carte')">Carte</a></li>
-  <li><a href="#" class="tablinks" onclick="openTab(event, 'Reportings')">Reportings</a></li>
-  <li><a href="#" class="tablinks" onclick="openTab(event, 'Autre')">Autre</a></li>
+  <li><a href="#" class="tablinks" onclick="openTab(event, 'Carte',0)">Carte</a></li>
+  <li><a href="#" class="tablinks" onclick="openTab(event, 'Reportings',0)">Reportings</a></li>
+  <li><a href="#" class="tablinks" onclick="openTab(event, 'Autre',0)">Autre</a></li>
 </ul>
+</div>
 
 <div id="Carte" class="tabcontent">
     <p><strong>Data visualisation Jeux Olympiques </strong> : <span id="info"></span></p>
@@ -46,6 +49,14 @@
 </SELECT>
 </FORM>
 	<div id="map" style="width: 1000px; height: 500px"></div>
+	  <div id="tooltip">
+        <p><strong>Pays</strong> : <span id="pays"></span></p>
+		<p><strong>Total</strong> : <span id="total"></span> </p>
+        <p><strong>Or</strong> : <span id="or"></span> </p>
+        <p><strong>Argent</strong> : <span id="argent"></span> </p>
+        <p><strong>Bronze</strong> : <span id="bronze"></span></p>
+        <div id="graph"></div>
+    </div>
 	</div>
 	
 	<div id="Reportings" class="tabcontent">
@@ -82,6 +93,7 @@
 	 
 	//alert(document.getElementById("annee").value);
     var Olympics_medal;
+	google.load('visualization', '1.0', {'packages': ['corechart']});
 	var annee = document.getElementById("annee").value;
     Papa.parse("http://jerem933.github.io/Business_Intelligence/Olympics_games_datasetV2.csv", {
             header: true,
@@ -537,6 +549,12 @@
                         onEachFeature: function (feature, layer) {
                             layer.on({
                                 mouseover: function (e) {
+								
+								var layer = e.target,
+                                souris = e.originalEvent,
+                                tooltip = document.getElementById("tooltip");
+								                            
+
                                     var prop = e.target.feature.properties;
                                     document.getElementById("info").innerHTML = prop.name + ' (' + prop.totalMedals + ')';
                                     layer.setStyle({
@@ -546,9 +564,34 @@
 										dashArray: '3',
 										color: "#000"
                                     })
+									
+									 // Affichage des infos dans le tooltip
+                            document.getElementById("pays").innerHTML = prop.name;
+                            document.getElementById("total").innerHTML = prop.totalMedals;
+                            document.getElementById("or").innerHTML = prop.totalGold;
+                            document.getElementById("argent").innerHTML = prop.totalSilver;
+                            document.getElementById("bronze").innerHTML = prop.totalBronze;
+                           
+                            // Création du graphique du tooltip
+                            creationGraph(prop);
+
+                            // Affichage du tooltip
+                            tooltip.style.display = "initial";
+
+                            // Déplacement du tooltip en fonction de la souris
+                            if (souris.pageY + 125 > window.innerHeight) {
+                                tooltip.style.top = souris.pageY - 250 + "px";
+                            } else {
+                                tooltip.style.top = souris.pageY - 125 + "px";
+                            }
+                            tooltip.style.left = souris.pageX + 10 + "px";
+                            
+                           
                                 },
                                 mouseout : function (e) {
                                     document.getElementById("info").innerHTML = "";
+									document.getElementById("tooltip").style.display = "none";
+
 									 layer.setStyle({
 										fillColor: getColor(feature.properties.totalMedals, annee),
 										fillOpacity: 0.7,
@@ -557,7 +600,10 @@
 										opacity: 1,
 										dashArray: '3'
                                     })
-                                }
+                                },
+								click : function (e){
+									openTab(2, 'Reportings',e.target.feature.properties.name);
+								}
                             })
                         }
                     }).addTo(map);
@@ -566,25 +612,58 @@
             }
         });
         
-        function openTab(evt, tabName) {
+        function openTab(evt, tabName,pays) {
+		
     // Declare all variables
     var i, tabcontent, tablinks;
 
+	if (pays !=  "0"){
+		
+	}
     // Get all elements with class="tabcontent" and hide them
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
     }
-
     // Get all elements with class="tablinks" and remove the class "active"
     tablinks = document.getElementsByClassName("tablinks");
     for (i = 0; i < tabcontent.length; i++) {
         tablinks[i].classList.remove("active");
     }
 
+	
     // Show the current tab, and add an "active" class to the link that opened the tab
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.classList.add("active");
+	
+	
+}
+
+// Création du graphique du tooltip
+function creationGraph(info) {
+    "use strict";
+    
+    var data = new google.visualization.DataTable();
+
+
+    data.addColumn('string', 'Trimestre');
+    data.addColumn('number', 'Taux');
+	
+    data.addRows([
+        ['2014 T2', info.an14trim2],
+        ['2015 T1', info.an15trim1],
+        ['2015 T2', info.an15trim2]
+    ]);
+    
+    var chart = new google.visualization.LineChart(document.getElementById('graph'));
+    chart.draw(data,
+        {
+            'title': 'Evolution du taux de chômage',
+            'width': 250,
+            'height': 150,
+            'vAxis': { viewWindow: { min: 5, max: 15 } },
+            'legend': { position: 'none' }
+        });
 }
 </script>
 
