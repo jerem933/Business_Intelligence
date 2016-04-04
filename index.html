@@ -655,15 +655,7 @@ function creationGraph(info) {
         ['2015 T2', info.an15trim2]
     ]);
     
-    var chart = new google.visualization.LineChart(document.getElementById('graph'));
-    chart.draw(data,
-        {
-            'title': 'Evolution du taux de chômage',
-            'width': 250,
-            'height': 150,
-            'vAxis': { viewWindow: { min: 5, max: 15 } },
-            'legend': { position: 'none' }
-        });
+
 }
 </script>
 
