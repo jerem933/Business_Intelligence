@@ -418,7 +418,19 @@
 					
                   				
 					// get color depending on population density value
-					function getColor(d) {
+					function getColor(d, x) {
+					if(x === "2002" || x === "2006" || x === "2010" || x === "2014") {
+						return d > 75  ? '#000099' :
+							   d > 60  ? '#0000CC' :
+							   d > 45  ? '#0066CC' :
+							   d > 30  ? '#0099CC' :
+							   d > 15  ? '#00CCCC' :
+							   d > 0  ?  '#00FFCC' :
+										 '#FFEDA0';
+						
+												
+					}
+					else {
 						return d > 1000 ? '#800026' :
 							   d > 500  ? '#BD0026' :
 							   d > 350  ? '#E31A1C' :
@@ -427,6 +439,8 @@
 							   d > 70   ? '#FEB24C' :
 							   d > 10   ? '#FED976' :
 										  '#FFEDA0';
+										 
+						}
 					}
                     
                     // Ici, à chaque département, on lui associe les valeurs du chômage
@@ -511,7 +525,7 @@
                         // option de style à mettre ici
                         style: function (feature) {
                             return { 
-                                fillColor: getColor(feature.properties.totalMedals),
+                                fillColor: getColor(feature.properties.totalMedals, annee),
                                 fillOpacity: 0.7,
                                 weight: 2,
                                 opacity: 1,
@@ -557,7 +571,7 @@
                                 mouseout : function (e) {
                                     document.getElementById("info").innerHTML = "";
 									 layer.setStyle({
-										fillColor: getColor(feature.properties.totalMedals),
+										fillColor: getColor(feature.properties.totalMedals, annee),
 										fillOpacity: 0.7,
 										weight: 2,
 										color: "white",
