@@ -51,42 +51,6 @@
 	<div id="Reportings" class="tabcontent">
   <h3>Reportings</h3>
     <p>Paris is the capital of France.</p> 
-  	<FORM>
-<SELECT name="pays" id="pays"  onchange="maj()" size="1">
-<OPTION>USA
-<OPTION>GER
-<OPTION>UKE
-<OPTION>dfs
-<OPTION>2006
-<OPTION>2008
-<OPTION>2010
-<OPTION>2012
-<OPTION>2014
-</SELECT>
-</FORM>
-
-  
-  							var chart = new CanvasJS.Chart("chartContainer",
-	{
-		theme: "theme2",
-		title:{
-			text: e.target.feature.properties.name
-		},		
-		data: [
-		{       
-			type: "pie",
-			legendText: "{indexLabel}",
-			dataPoints: [
-				{  y: e.target.feature.properties.totalGold, indexLabel: "OR"},
-				{  y: e.target.feature.properties.totalSilver, indexLabel: "ARGENT" },
-				{  y: e.target.feature.properties.totalBronze, indexLabel: "BRONZE" },
-			
-			]
-		}
-		]
-	});
-	
-	chart.render();
 </div>
 
 <div id="Autre" class="tabcontent">
