@@ -59,9 +59,28 @@
     </div>
 	</div>
 	
-	<div id="Reportings" class="tabcontent">
+<div id="Reportings" class="tabcontent">
   <h3>Reportings</h3>
+  <FORM>
+  <SELECT name="pays" id="pays" onchange="tableau()" size="1">
+<OPTION value="AUS">Australie</option>
+<OPTION value="AUT">Autriche</option>
+<OPTION value="CAN">Canada</option>
+<OPTION value="CHN">Chine</option>
+<OPTION value="FRA">France</option>
+<OPTION value="GBR">Grande Bretagne</option>
+<OPTION value="GER">Allemagne</option>
+<OPTION value="ITA">Italie</option>
+<OPTION value="NOR">Norvège</option>
+<OPTION value="RUS">Russie</option>
+<OPTION value="SWE">Suède</option>
+<OPTION value="USA">Etats-Unis</option>
+</SELECT>
+</FORM>
+  <div id="FiltrePays">
+</div>
     <p>Paris is the capital of France.</p> 
+	
 </div>
 
 <div id="Autre" class="tabcontent">
@@ -657,5 +676,78 @@ function creationGraph(info) {
     
 
 }
+
+function tableau(){
+	$(function () {
+	var pays = document.getElementById("pays").value;
+    $('#FiltrePays').highcharts({
+        chart: {
+            type: 'column'
+        },
+		 colors: [
+		 '#FFD700', '#C0C0C0', '#8C7853'
+                ],
+        title: {
+            text: document.getElementById("pays").options[document.getElementById('pays').selectedIndex].text,
+        },
+        xAxis: {
+            categories: ['2000', '2002', '2004', '2006', '2008', '2010', '2012', '2014']
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Total des médailles'
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        legend: {
+            align: 'right',
+            x: -30,
+            verticalAlign: 'top',
+            y: 25,
+            floating: true,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+            borderColor: '#CCC',
+            borderWidth: 1,
+            shadow: false
+        },
+        tooltip: {
+            headerFormat: '<b>{point.x}</b><br/>',
+            pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: true,
+                    color: 'white',
+                    style: {
+                        textShadow: '0 0 3px black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'OR',
+            data: [5, 3, 4, 7, 2, 8, 0, 2]
+        }, {
+            name: 'ARGENT',
+            data: [2, 2, 3, 2, 1, 8, 0, 3],
+        }, {
+            name: 'BRONZE',
+            data: [3, 4, 4, 2, 5, 9, 0, 5]
+        }]
+    });
+});
+	
+	}
+
+
 </script>
 
