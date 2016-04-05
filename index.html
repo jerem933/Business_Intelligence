@@ -35,7 +35,6 @@
 
 <div id="Carte" class="tabcontent">
     <p><strong>Data visualisation Jeux Olympiques </strong> : <span id="info"></span></p>
-    <!-- <input type="file" id="csv-file" name="files"/> -->
 	<FORM>
 <SELECT name="annee" id="annee"  onchange="maj()" size="1">
 <OPTION>Historique
@@ -660,6 +659,9 @@
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.classList.add("active");
 	
+	if(document.getElementById(tabName) === "Reporting"){
+	tableau();
+	}
 	
 }
 
@@ -740,16 +742,15 @@ function tableau(){
         },
         series: [{
             name: 'OR',
-            data: [recherche(pays, "2000", "Gold"), recherche(pays, "2002", "Gold"), recherche(pays, "2004", "Gold"), recherche(pays, "2008", "Gold"), recherche(pays, "2010", "Gold"), recherche(pays, "2012", "Gold"), recherche(pays, "2014", "Gold"), recherche(pays, "2016", "Gold")]
+            data: [recherche(pays, "2000", "Gold"), recherche(pays, "2002", "Gold"), recherche(pays, "2004", "Gold"), recherche(pays, "2006", "Gold"), recherche(pays, "2008", "Gold"), recherche(pays, "2010", "Gold"), recherche(pays, "2012", "Gold"), recherche(pays, "2014", "Gold")],
 
         }, {
             name: 'ARGENT',
-            data: [recherche(pays, "2000", "Silver"), recherche(pays, "2002", "Silver"), recherche(pays, "2004", "Silver"), recherche(pays, "2008", "Silver"), recherche(pays, "2010", "Silver"), recherche(pays, "2012", "Silver"), recherche(pays, "2014", "Silver"), recherche(pays, "2016", "Silver")],
+            data: [recherche(pays, "2000", "Silver"), recherche(pays, "2002", "Silver"), recherche(pays, "2004", "Silver"), recherche(pays, "2006", "Silver"), recherche(pays, "2008", "Silver"), recherche(pays, "2010", "Silver"), recherche(pays, "2012", "Silver"), recherche(pays, "2014", "Silver")],
 
         }, {
             name: 'BRONZE',
-            data: [recherche(pays, "2000", "Bronze"), recherche(pays, "2002", "Bronze"), recherche(pays, "2004", "Bronze"), recherche(pays, "2008", "Bronze"), recherche(pays, "2010", "Bronze"), recherche(pays, "2012", "Bronze"), recherche(pays, "2014", "Bronze"), recherche(pays, "2016", "Bronze")]
-            //data: [5, 4, 4, 2, 5, 9, 0, 5]
+            data: [recherche(pays, "2000", "Bronze"), recherche(pays, "2002", "Bronze"), recherche(pays, "2004", "Bronze"), recherche(pays, "2006", "Bronze"), recherche(pays, "2008", "Bronze"), recherche(pays, "2010", "Bronze"), recherche(pays, "2012", "Bronze"), recherche(pays, "2014", "Bronze")]
         }]
     });
 });
