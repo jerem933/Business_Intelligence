@@ -68,7 +68,7 @@
 <OPTION value="AUT">Autriche</option>
 <OPTION value="CAN">Canada</option>
 <OPTION value="CHN">Chine</option>
-<OPTION value="FRA">France</option>
+<OPTION value="FRA" selected>France</option>
 <OPTION value="GBR">Grande Bretagne</option>
 <OPTION value="GER">Allemagne</option>
 <OPTION value="ITA">Italie</option>
@@ -125,6 +125,7 @@
                 var totalMedalsUS = 0, totalGoldUS = 0, totalSilverUS = 0, totalBronzeUS = 0, totalMedalsDE = 0, totalGoldDE = 0, totalSilverDE = 0, totalBronzeDE = 0, totalMedalsFR = 0, totalGoldFR = 0, totalSilverFR = 0, totalBronzeFR = 0, totalMedalsAUS = 0, totalGoldAUS = 0, totalSilverAUS = 0, totalBronzeAUS = 0, totalMedalsAUT = 0, totalGoldAUT = 0, totalSilverAUT = 0, totalBronzeAUT = 0, totalMedalsCAN = 0, totalGoldCAN = 0, totalSilverCAN = 0, totalBronzeCAN = 0, totalMedalsCHN = 0, totalGoldCHN = 0, totalSilverCHN = 0, totalBronzeCHN = 0, totalMedalsGBR = 0, totalGoldGBR = 0, totalSilverGBR = 0, totalBronzeGBR = 0, totalMedalsIT = 0, totalGoldIT = 0, totalSilverIT = 0, totalBronzeIT = 0, totalMedalsNOR = 0, totalGoldNOR = 0, totalSilverNOR = 0, totalBronzeNOR = 0, totalMedalsRUS = 0, totalGoldRUS = 0, totalSilverRUS = 0, totalBronzeRUS = 0, totalMedalsSWE = 0, totalGoldSWE = 0, totalSilverSWE = 0, totalBronzeSWE = 0;
                 
 				for (var i=0; i < Olympics_medal.data.length; i++) {
+
 					
 					if (annee !== "Historique"){
                     if (Olympics_medal.data[i].Country === "USA" && Olympics_medal.data[i].Total !== "" && Olympics_medal.data[i].Year == annee) {
@@ -551,6 +552,8 @@
 							d.properties.totalBronze = totalBronzeIT;
 						}
                     });
+					tableau();
+
                     
                     // Ajout des départements, avec un remplissage en fonction de la variable totalMedals
                     L.geoJson(data, {
@@ -631,6 +634,7 @@
                 }); 
             }
         });
+
         
         function openTab(evt, tabName,pays) {
 		
@@ -736,19 +740,53 @@ function tableau(){
         },
         series: [{
             name: 'OR',
-            data: [5, 3, 4, 7, 2, 8, 0, 2]
+            data: [recherche(pays, "2000", "Gold"), recherche(pays, "2002", "Gold"), recherche(pays, "2004", "Gold"), recherche(pays, "2008", "Gold"), recherche(pays, "2010", "Gold"), recherche(pays, "2012", "Gold"), recherche(pays, "2014", "Gold"), recherche(pays, "2016", "Gold")]
+
         }, {
             name: 'ARGENT',
-            data: [2, 2, 3, 2, 1, 8, 0, 3],
+            data: [recherche(pays, "2000", "Silver"), recherche(pays, "2002", "Silver"), recherche(pays, "2004", "Silver"), recherche(pays, "2008", "Silver"), recherche(pays, "2010", "Silver"), recherche(pays, "2012", "Silver"), recherche(pays, "2014", "Silver"), recherche(pays, "2016", "Silver")],
+
         }, {
             name: 'BRONZE',
-            data: [3, 4, 4, 2, 5, 9, 0, 5]
+            data: [recherche(pays, "2000", "Bronze"), recherche(pays, "2002", "Bronze"), recherche(pays, "2004", "Bronze"), recherche(pays, "2008", "Bronze"), recherche(pays, "2010", "Bronze"), recherche(pays, "2012", "Bronze"), recherche(pays, "2014", "Bronze"), recherche(pays, "2016", "Bronze")]
+            //data: [5, 4, 4, 2, 5, 9, 0, 5]
         }]
     });
 });
 	
+}	
+	
+	function recherche(pays, annee, typeM){
+	var medailles = 0;
+		for (var i = 0; i < Olympics_medal.data.length; i++) {
+		if (Olympics_medal.data[i].Country === pays && Olympics_medal.data[i].Year == annee) {
+		switch(typeM){
+		case "Gold":
+			medailles  = addmedailles(medailles,Olympics_medal.data[i].Gold);
+			break;
+		case "Silver":
+			medailles  = addmedailles(medailles,Olympics_medal.data[i].Silver);
+			break;
+		case "Bronze":
+			medailles = addmedailles(medailles,Olympics_medal.data[i].Bronze);
+			break;
+		default:
+			alert("Erreur");
+			break;
+		}
+		}
+		}
+	return medailles;
+	
 	}
-
-
+	function addmedailles(medailles, typeM){
+	if(typeM == ""){
+		return medailles;
+	}
+	else{
+	return medailles += parseInt(typeM);
+	}
+	
+	}
 </script>
 
