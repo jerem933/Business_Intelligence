@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +8,7 @@
 	<link rel="stylesheet" href="index.css">
 	<script src="leaflet/leaflet.js"></script>
     <script src="PapaParse-4.1.2/PapaParse-4.1.2/papaparse.min.js"></script>
-	    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script src="canvasjs-1.8.0/canvasjs.min.js"></script>
     <script src="jquery-2.2.0.min.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
@@ -62,33 +61,28 @@
 <div id="Reportings" class="tabcontent">
   <h3>Reportings</h3>
   <FORM>
-  <SELECT name="paysfiltre" id="paysfiltre" onchange="tableau()" size="1">
-<OPTION value="AUS">Australie</option>
-<OPTION value="AUT">Autriche</option>
+  <SELECT name="paysfiltre" id="paysfiltre" onchange="tableau('','')" size="1">
+<OPTION value="AUS">Australia</option>
+<OPTION value="AUT">Austria</option>
 <OPTION value="CAN">Canada</option>
-<OPTION value="CHN">Chine</option>
-<OPTION value="FRA" selected>France</option>
-<OPTION value="GBR">Grande Bretagne</option>
-<OPTION value="GER">Allemagne</option>
-<OPTION value="ITA">Italie</option>
-<OPTION value="NOR">Norvège</option>
-<OPTION value="RUS">Russie</option>
-<OPTION value="SWE">Suède</option>
-<OPTION value="USA">Etats-Unis</option>
+<OPTION value="CHN">China</option>
+<OPTION value="FRA" selected="selected">France</option>
+<OPTION value="GBR">United Kingdom</option>
+<OPTION value="GER">Germany</option>
+<OPTION value="ITA">Italy</option>
+<OPTION value="NOR">Norway</option>
+<OPTION value="RUS">Russia</option>
+<OPTION value="SWE">Sweden</option>
+<OPTION value="USA">United States of America</option>
 </SELECT>
 </FORM>
   <div id="FiltrePays">
 </div>
-    <p>Paris is the capital of France.</p> 
-	
 </div>
 
 <div id="Autre" class="tabcontent">
   <h3>Autre</h3>
-  <p>Tokyo is the capital of Japan.</p>
 </div>
-	
-	<div id="chartContainer" style="height: 300px; width: 100%;"></div>
 </body>
 </html>
 
@@ -107,10 +101,7 @@
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);		
-     
-	 
-	 
-	//alert(document.getElementById("annee").value);
+    
     var Olympics_medal;
 	google.load('visualization', '1.0', {'packages': ['corechart']});
 	var annee = document.getElementById("annee").value;
@@ -447,6 +438,7 @@
             
 
                 $.getJSON("country.geojson", function (data) {
+				console.log("Chargement du JSON");
 					
                   				
 					// get color depending on population density value
@@ -551,7 +543,7 @@
 							d.properties.totalBronze = totalBronzeIT;
 						}
                     });
-					tableau();
+					tableau("FRA","France");
 
                     
                     // Ajout des départements, avec un remplissage en fonction de la variable totalMedals
@@ -595,7 +587,7 @@
                             document.getElementById("bronze").innerHTML = prop.totalBronze;
                            
                             // Création du graphique du tooltip
-                            creationGraph(prop);
+                            //creationGraph(prop);
 
                             // Affichage du tooltip
                             tooltip.style.display = "initial";
@@ -624,7 +616,9 @@
                                     })
                                 },
 								click : function (e){
+									tableau(e.target.feature.id,e.target.feature.properties.name);
 									openTab(2, 'Reportings',e.target.feature.properties.name);
+									
 								}
                             })
                         }
@@ -657,16 +651,14 @@
 	
     // Show the current tab, and add an "active" class to the link that opened the tab
     document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.classList.add("active");
+    //evt.currentTarget.classList.add("active");
 	
-	if(document.getElementById(tabName) === "Reporting"){
-	tableau();
-	}
+	
 	
 }
 
 // Création du graphique du tooltip
-function creationGraph(info) {
+/*function creationGraph(info) {
     "use strict";
     
     var data = new google.visualization.DataTable();
@@ -682,11 +674,20 @@ function creationGraph(info) {
     ]);
     
 
-}
+}*/
 
-function tableau(){
+function tableau(paysclique,titreclique){
+	var paysclique;
+	var titreclique;
 	$(function () {
-	var pays = document.getElementById("paysfiltre").value;
+	if(paysclique !=  ""){
+		var pays = paysclique;
+		var titre = titreclique;
+	}
+	else {
+		pays = document.getElementById("paysfiltre").value;
+		titre = document.getElementById("paysfiltre").options[document.getElementById('paysfiltre').selectedIndex].text;
+	}
     $('#FiltrePays').highcharts({
         chart: {
             type: 'column'
@@ -695,7 +696,7 @@ function tableau(){
 		 '#FFD700', '#C0C0C0', '#8C7853'
                 ],
         title: {
-            text: document.getElementById("paysfiltre").options[document.getElementById('paysfiltre').selectedIndex].text,
+            text: titre,
         },
         xAxis: {
             categories: ['2000', '2002', '2004', '2006', '2008', '2010', '2012', '2014']
@@ -754,7 +755,7 @@ function tableau(){
         }]
     });
 });
-	
+	paysclique = "";
 }	
 	
 	function recherche(pays, annee, typeM){
