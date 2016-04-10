@@ -500,7 +500,7 @@ function maj(){
                            
 						   
                             // Création du graphique du tooltip
-                            creationGraph("Sport");
+                            //creationGraph("Sport");
 
                             // Affichage du tooltip
                             tooltip.style.display = "initial";
