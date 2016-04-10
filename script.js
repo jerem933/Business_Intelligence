@@ -347,7 +347,7 @@ function maj(){
 				}
 				}
 				
-				openTab(1, 'Carte',0);
+				openTab(1, 'Carte');
 
                 $.getJSON("country.geojson", function (data) {
 				
@@ -530,7 +530,7 @@ function maj(){
                                 },
 								click : function (e){
 									tableau(e.target.feature.id,e.target.feature.properties.name);
-									openTab(2, 'Reportings',e.target.feature.properties.name);
+									openTab(2, 'Reportings');
 									
 								}
                             })
@@ -542,7 +542,7 @@ function maj(){
         });
 
         
-        function openTab(evt, tabName,pays) {
+        function openTab(evt, tabName) {
 		
     // Declare all variables
     var i, tabcontent, tablinks;
@@ -550,21 +550,23 @@ function maj(){
 	if (tabName ===  "Autre"){
 		drawStuff("Sport");
 	}
+	
 	if (tabName ===  "Recherche"){
 		drawStringFilter();
 	}
+	
     // Get all elements with class="tabcontent" and hide them
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
     }
+	
     // Get all elements with class="tablinks" and remove the class "active"
     tablinks = document.getElementsByClassName("tablinks");
     for (i = 0; i < tabcontent.length; i++) {
         tablinks[i].classList.remove("active");
     }
 
-	
     // Show the current tab, and add an "active" class to the link that opened the tab
     document.getElementById(tabName).style.display = "block";
     //evt.currentTarget.classList.add("active");
@@ -585,7 +587,7 @@ var donnee;
 			year = Olympics_medal.data[i].Year;	
 				if(Olympics_medal.data[i].Total !== ""){
 				if(array_filter[donnee] == null){
-						array_filter[donnee] = {2000 : 0, 2002 : 0, 2004 : 0, 2006 : 0,2008 : 0, 2010 : 0,2012 : 0, 2014 : 0}; 
+						array_filter[donnee] = {'2000' : 0, '2002' : 0, '2004' : 0, '2006' : 0,'2008' : 0, '2010' : 0,'2012' : 0, '2014' : 0}; 
 				}
 				array_filter[donnee][year] = array_filter[donnee][year] + Olympics_medal.data[i].Total ; 		
 				}
@@ -602,7 +604,7 @@ var donnee;
 		
 		data[0]=tmp;
 		var lgr = tmp.length-1;
-		var tab = [2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014];
+		var tab = ['2000', '2002', '2004', '2006', '2008', '2010', '2012', '2014'];
 		var cpt =1;
 		tab.forEach (function(entry) {
 			tmp =[];
@@ -619,7 +621,7 @@ var donnee;
 
       var options = {
 	    title: "Nombre de médailles par année",
-        width: 800,
+        width: 1500,
         height: 1000,
         legend: { position: 'top', maxLines: 3 },
         bar: {groupWidth: '75%'},
@@ -760,6 +762,7 @@ function tableau(paysclique,titreclique){
 		
       function drawStuff(param) {
 	  filtre =param;
+
         var dashboard = new google.visualization.Dashboard(
           document.getElementById('programmatic_dashboard_div'));
 
@@ -772,7 +775,7 @@ function tableau(paysclique,titreclique){
             'ui': {'labelStacking': 'vertical'}
           }
         });
-
+		
        programmaticChart  = new google.visualization.ChartWrapper({
         'chartType': 'PieChart',
         'containerId': 'programmatic_chart_div',
@@ -786,9 +789,8 @@ function tableau(paysclique,titreclique){
       });
 	
 		var array_filter =[];
-		
-
-		for (var i=0; i < (Olympics_medal.data.length); i++) {
+	
+		for (var i=0; i < (Olympics_medal.data.length-1); i++) {
 				if(Olympics_medal.data[i].Total !== ""){
 					if(array_filter[Olympics_medal.data[i][param]] != null){
 					array_filter[Olympics_medal.data[i][param]] = parseInt(array_filter[Olympics_medal.data[i][param]]) + parseInt((Olympics_medal.data[i].Total));
@@ -810,9 +812,10 @@ function tableau(paysclique,titreclique){
 		}
 
       dashboard.bind(programmaticSlider, programmaticChart);
+
       dashboard.draw(data);
 	   
-	   
+	
 	   creationGraph();
 	   drawchartPays('summer');
     }
@@ -913,7 +916,34 @@ else
 		var previous = null;
 		tab.forEach (function(entry) {
 			tmp2 =[];
-			tmp2.push(entry);
+			switch(entry){
+				case 2000:
+					tmp2.push(00);
+					break;
+				case 2002:
+					tmp2.push(02);
+					break;
+				case 2004:
+					tmp2.push(04);
+					break;
+				case 2006:
+					tmp2.push(06);
+					break;
+				case 2008:
+					tmp2.push(08);
+					break;
+				case 2010:
+					tmp2.push(10);
+					break;
+				case 2012:
+					tmp2.push(12);
+					break;
+				case 2014:
+					tmp2.push(14);
+					break;
+				
+			}
+
 			for (index = 0; index < lgr; ++index) {
 				if(array_filter[donnee_param[index]][entry] != null)
 					tmp2.push(array_filter[donnee_param[index]][entry]);
@@ -936,14 +966,13 @@ else
         chart: {
           title: 'Nombre de médailles par ' + param,
           subtitle: 'en ' + season_fr,
-          legend: { position: 'bottom' }
-
+          legend: { position: 'bottom' },
 
         },
         width: 1200,
         height: 700
       };
-
+	
       var chart = new google.charts.Line(document.getElementById('linechart_material'));
 
       chart.draw(data, options);
